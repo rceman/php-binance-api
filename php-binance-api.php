@@ -380,19 +380,27 @@ class API
      *
      * $orderid = "123456789";
      * $order = $api->cancel("BNBBTC", $orderid);
+     * OR
+     * $order = $api->cancel("BNBBTC", false, "3ad3aba4e8e908c4ca3e47375c160c95");
      *
      * @param $symbol string the currency symbol
      * @param $orderid string the orderid to cancel
+     * @param $origClientOrderId string the origClientOrderId to cancel
      * @param $flags array of optional options like ["side"=>"sell"]
      * @return array with error message or the order details
      * @throws \Exception
      */
-    public function cancel(string $symbol, $orderid, $flags = [])
+    public function cancel(string $symbol, $orderid, string $origClientOrderId = "", $flags = [])
     {
         $params = [
-            "symbol" => $symbol,
-            "orderId" => $orderid,
+            "symbol" => $symbol
         ];
+
+        if ($origClientOrderId === "")
+            $params["orderId"] = $orderid;
+        else
+            $params["origClientOrderId"] = $origClientOrderId;
+
         return $this->httpRequest("v3/order", "DELETE", array_merge($params, $flags), true);
     }
 
