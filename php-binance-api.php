@@ -1094,8 +1094,8 @@ class API
         if (isset($flags['newOrderRespType'])) {
             $opt['newOrderRespType'] = $flags['newOrderRespType'];
         }
-	    
-	if (isset($flags['newClientOrderId'])) {
+
+        if (isset($flags['newClientOrderId'])) {
             $opt['newClientOrderId'] = $flags['newClientOrderId'];
         }
 
