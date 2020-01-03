@@ -401,18 +401,25 @@ class API
      *
      * $orderid = "123456789";
      * $order = $api->orderStatus("BNBBTC", $orderid);
+     * OR
+     * $order = $api->orderStatus("BNBBTC", false, "3ad3aba4e8e908c4ca3e47375c160c95");
      *
      * @param $symbol string the currency symbol
-     * @param $orderid string the orderid to cancel
+     * @param $orderid number the orderid
+     * @param $origClientOrderId string the origClientOrderId
      * @return array with error message or the order details
      * @throws \Exception
      */
-    public function orderStatus(string $symbol, $orderid)
+    public function orderStatus(string $symbol, $orderid, string $origClientOrderId = "")
     {
-        return $this->httpRequest("v3/order", "GET", [
-            "symbol" => $symbol,
-            "orderId" => $orderid,
-        ], true);
+        $args = ["symbol" => $symbol];
+
+        if ($origClientOrderId === "")
+            $args["orderId"] = $orderid;
+        else
+            $args["origClientOrderId"] = $origClientOrderId;
+
+        return $this->httpRequest("v3/order", "GET", $args, true);
     }
 
     /**
